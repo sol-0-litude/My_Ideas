@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Ideas</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%A1%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#101216;--panel:#171a20;--line:#252932;--text:#e6e8ee;--muted:#8a909d;--accent:#8fc9b4;--soft:rgba(143,201,180,.1);--serif:"Newsreader",Georgia,serif;--sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+[data-theme=light]{--bg:#fafafa;--panel:#fff;--line:#e5e7eb;--text:#1c1f26;--muted:#6b7280;--accent:#2f7d68;--soft:rgba(47,125,104,.08)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--sans);transition:background .25s,color .25s}
+.wrap{max-width:720px;margin:0 auto;padding:56px 22px 40px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:36px}
+.hi{margin:0 0 2px;color:var(--muted);font-size:14px}
+h1{margin:0;font:500 38px/1.15 var(--serif);letter-spacing:-.01em}
+h1 i{color:var(--accent);font-style:italic}
+button,.btn{font:inherit;color:inherit;cursor:pointer}
+#theme{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--panel);font-size:16px;line-height:1;transition:transform .35s,border-color .2s}
+#theme:hover{border-color:var(--accent);transform:rotate(25deg)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px}
+.tabs{display:flex;gap:4px;margin-right:auto}
+.tab{background:none;border:0;padding:6px 12px;border-radius:8px;color:var(--muted);font-size:15px;transition:color .2s,background .2s}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--text);background:var(--soft)}
+.tab span{margin-left:6px;font-size:13px;color:var(--muted)}
+#q{width:150px;padding:7px 12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--text);font:14px var(--sans);transition:border-color .2s,width .25s}
+#q:focus{outline:none;border-color:var(--accent);width:200px}
+.btn{display:inline-block;padding:7px 14px;border-radius:8px;border:1px solid var(--accent);color:var(--accent);font-size:14px;text-decoration:none;background:none;transition:background .2s,color .2s}
+.btn:hover{background:var(--accent);color:var(--bg)}
+#list{animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}}
+.row{display:flex;align-items:baseline;gap:14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:15px 8px;transition:background .15s,padding .2s}
+.row:hover{background:var(--soft);padding-left:14px}
+.ty{flex:0 0 42px;font:13px var(--mono);color:var(--accent)}
+.nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .nm{font-family:var(--serif);font-size:19px}
+.sz{font-size:13px;color:var(--muted)}
+.empty{padding:48px 8px;color:var(--muted);text-align:center}
+.empty b{display:block;font:400 20px var(--serif);color:var(--text);margin-bottom:6px}
+#reader[hidden],#home[hidden]{display:none}
+.rh{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.rh .nm{font:500 15px var(--sans);color:var(--muted)}
+.ghost{background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:14px;color:var(--text);text-decoration:none;transition:border-color .2s}
+.ghost:hover{border-color:var(--accent)}
+#rb{animation:rise .35s ease both}
+#rb h1,#rb h2,#rb h3{font-family:var(--serif);font-weight:500;line-height:1.25;margin:1.6em 0 .5em}
+#rb h1{font-size:32px;margin-top:0}#rb h2{font-size:25px}#rb h3{font-size:20px}
+#rb p,#rb li{font-family:var(--serif);font-size:18px;line-height:1.75}
+#rb a{color:var(--accent)}
+#rb img{max-width:100%;border-radius:8px}
+#rb blockquote{margin:1.2em 0;padding:2px 18px;border-left:3px solid var(--accent);color:var(--muted)}
+#rb code{font:14px var(--mono);background:var(--panel);padding:2px 6px;border-radius:5px}
+#rb pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;font:14px/1.6 var(--mono);margin:0;tab-size:4}
+#rb pre code{background:none;padding:0}
+#rb table{border-collapse:collapse;width:100%;font-size:15px}#rb th,#rb td{border-bottom:1px solid var(--line);padding:8px;text-align:left}
+footer{margin-top:56px;color:var(--muted);font-size:13px;text-align:center}
+kbd{font:12px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+@media(max-width:520px){h1{font-size:32px}#q,#q:focus{width:100%;order:3}.wrap{padding-top:36px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div id="home">
+<header>
+<div><p class="hi" id="hi"></p><h1>My <i>Ideas</i></h1></div>
+<button id="theme" aria-label="Switch between dark and light mode" title="Switch theme"></button>
+</header>
+<div class="bar">
+<div class="tabs" role="tablist">
+<button class="tab" data-t="notes" role="tab">Notes<span id="cn">0</span></button>
+<button class="tab" data-t="files" role="tab">Files<span id="cf">0</span></button>
+</div>
+<input id="q" type="search" placeholder="Search" aria-label="Search">
+<a id="act" class="btn" target="_blank" rel="noopener"></a>
+</div>
+<div id="list"></div>
+<footer>Press <kbd>/</kbd> to search. Add or change files on GitHub and this page updates by itself.</footer>
+</div>
+<div id="reader" hidden>
+<div class="rh">
+<button class="ghost" id="back">Back</button>
+<span class="nm" id="rt"></span>
+<button class="ghost" id="copy">Copy</button>
+<a class="ghost" id="dl" download>Download</a>
+</div>
+<div id="rb"></div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+/* Change these if your repo or branch changes */
+const C={user:'sol-0-litude',repo:'My_Ideas',branch:'main',notes:'notes',files:'files'};
+const gh='https://github.com/'+C.user+'/'+C.repo;
+const TEXT=new Set(['txt','md','py','js','ts','jsx','tsx','json','csv','html','css','c','cpp','h','java','sh','yml','yaml','toml','xml','ini','log','rs','go','sql','r','rb','php','swift','kt','tex']);
+const S={tab:'notes',notes:[],files:[],q:'',err:'',cur:''};
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ext=n=>n.includes('.')?n.split('.').pop().toLowerCase():'';
+const fmt=b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB';
+const pretty=n=>n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ');
+
+function setTheme(t){
+  document.documentElement.dataset.theme=t;
+  $('#theme').textContent=t==='dark'?'\u2600':'\u263E';
+  try{localStorage.setItem('theme',t)}catch(e){}
+}
+let saved=null;try{saved=localStorage.getItem('theme')}catch(e){}
+setTheme(saved||'dark');
+$('#theme').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+
+const h=new Date().getHours();
+$('#hi').textContent=h<5?'Still up?':h<12?'Good morning':h<18?'Good afternoon':'Good evening';
+
+async function load(dir){
+  const r=await fetch('https://api.github.com/repos/'+C.user+'/'+C.repo+'/contents/'+dir+'?ref='+C.branch);
+  if(r.status===404)return[];
+  if(!r.ok)throw new Error('GitHub returned '+r.status);
+  return(await r.json()).filter(x=>x.type==='file'&&!x.name.startsWith('.'));
+}
+
+function render(){
+  $('#cn').textContent=S.notes.length;
+  $('#cf').textContent=S.files.length;
+  document.querySelectorAll('.tab').forEach(t=>{const on=t.dataset.t===S.tab;t.classList.toggle('on',on);t.setAttribute('aria-selected',on)});
+  const n=S.tab==='notes';
+  $('#act').href=gh+(n?'/new/':'/upload/')+C.branch+'/'+C[S.tab];
+  $('#act').textContent=n?'New note':'Upload file';
+  const el=$('#list');
+  if(S.err){el.innerHTML='<div class="empty"><b>Could not load from GitHub</b>'+esc(S.err)+'. Wait a minute and refresh.</div>';return}
+  const list=S[S.tab].filter(f=>f.name.toLowerCase().includes(S.q));
+  if(!list.length){
+    el.innerHTML=S.q?'<div class="empty"><b>No matches</b>Try a different word.</div>'
+      :n?'<div class="empty"><b>No notes yet</b>Add a .md file to the notes folder and it appears here.</div>'
+        :'<div class="empty"><b>No files yet</b>Add a PDF, text file or code file to the files folder and it appears here.</div>';
+    return;
+  }
+  el.innerHTML=list.map(f=>'<button class="row" data-p="'+esc(f.path)+'"><span class="ty">'+esc(n?'note':(ext(f.name)||'file'))+'</span><span class="nm">'+esc(n?pretty(f.name):f.name)+'</span><span class="sz">'+fmt(f.size)+'</span></button>').join('');
+}
+
+async function openItem(f){
+  const e=ext(f.name),url=encodeURI(f.path);
+  if(S.tab==='files'&&!TEXT.has(e)){window.open(url,'_blank');return}
+  $('#home').hidden=true;$('#reader').hidden=false;window.scrollTo(0,0);
+  $('#rt').textContent=S.tab==='notes'?pretty(f.name):f.name;
+  $('#dl').href=url;$('#dl').setAttribute('download',f.name);
+  $('#rb').innerHTML='<div class="empty">Loading</div>';
+  try{
+    const r=await fetch(url);if(!r.ok)throw 0;
+    S.cur=await r.text();
+    $('#rb').innerHTML=e==='md'&&window.marked?marked.parse(S.cur):'<pre><code>'+esc(S.cur)+'</code></pre>';
+  }catch(x){$('#rb').innerHTML='<div class="empty"><b>Could not open this file</b>It may still be publishing. Wait a minute and try again.</div>'}
+}
+function back(){$('#reader').hidden=true;$('#home').hidden=false}
+
+$('#list').onclick=e=>{const b=e.target.closest('.row');if(b)openItem(S[S.tab].find(x=>x.path===b.dataset.p))};
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{S.tab=t.dataset.t;render()});
+$('#q').oninput=e=>{S.q=e.target.value.trim().toLowerCase();render()};
+$('#back').onclick=back;
+$('#copy').onclick=async e=>{
+  try{await navigator.clipboard.writeText(S.cur);e.target.textContent='Copied'}catch(x){e.target.textContent='Could not copy'}
+  setTimeout(()=>e.target.textContent='Copy',1400);
+};
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!$('#reader').hidden)back();
+  if(e.key==='/'&&!$('#home').hidden&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('#q').focus()}
+});
+
+(async()=>{
+  try{
+    const r=await Promise.all([load(C.notes),load(C.files)]);
+    S.notes=r[0].filter(f=>ext(f.name)==='md');S.files=r[1];
+  }catch(e){S.err=e.message}
+  render();
+})();
+</script>
+</body>
+</html>
