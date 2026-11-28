@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-color="green">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Ideas</title>
+<script>try{var d=document.documentElement,c=localStorage.getItem('color'),t=localStorage.getItem('theme');if(c)d.dataset.color=c;if(t)d.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%A1%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,10 +12,19 @@
 <style>
 :root{--bg:#101216;--panel:#171a20;--line:#252932;--text:#e6e8ee;--muted:#8a909d;--accent:#8fc9b4;--soft:rgba(143,201,180,.1);--serif:"Newsreader",Georgia,serif;--sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
 [data-theme=light]{--bg:#fafafa;--panel:#fff;--line:#e5e7eb;--text:#1c1f26;--muted:#6b7280;--accent:#2f7d68;--soft:rgba(47,125,104,.08)}
+[data-color=blue]{--accent:#8db8ee;--soft:rgba(141,184,238,.12)}
+[data-color=blue][data-theme=light]{--accent:#2b6cb0;--soft:rgba(43,108,176,.08)}
+[data-color=violet]{--accent:#b4a0ee;--soft:rgba(180,160,238,.12)}
+[data-color=violet][data-theme=light]{--accent:#6b4fc0;--soft:rgba(107,79,192,.08)}
+[data-color=amber]{--accent:#e8b45a;--soft:rgba(232,180,90,.12)}
+[data-color=amber][data-theme=light]{--accent:#a8680a;--soft:rgba(168,104,10,.09)}
+[data-color=rose]{--accent:#ee8fae;--soft:rgba(238,143,174,.12)}
+[data-color=rose][data-theme=light]{--accent:#b83a62;--soft:rgba(184,58,98,.08)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--sans);transition:background .25s,color .25s}
-.wrap{max-width:720px;margin:0 auto;padding:56px 22px 40px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--sans);transition:background .25s,color .25s;overflow-x:hidden}
+.wrap{max-width:720px;margin:0 auto;padding:56px 22px 40px;transition:max-width .3s}
+.wrap.wide{max-width:1000px}
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:36px}
 .hi{margin:0 0 2px;color:var(--muted);font-size:14px}
 h1{margin:0;font:500 38px/1.15 var(--serif);letter-spacing:-.01em}
@@ -22,6 +32,18 @@ h1 i{color:var(--accent);font-style:italic}
 button,.btn{font:inherit;color:inherit;cursor:pointer}
 #theme{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--panel);font-size:16px;line-height:1;transition:transform .35s,border-color .2s}
 #theme:hover{border-color:var(--accent);transform:rotate(25deg)}
+.tools{display:flex;align-items:center;gap:10px}
+.pal{position:relative}
+#color{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;color:var(--accent);transition:transform .25s,border-color .2s}
+#color:hover{border-color:var(--accent);transform:scale(1.08)}
+#color .i{width:17px;height:17px}
+.sw{position:absolute;top:calc(100% + 10px);right:0;z-index:5;display:flex;gap:10px;padding:10px 12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);transform-origin:top right;animation:pup .18s ease both}
+.sw[hidden]{display:none}
+@keyframes pup{from{opacity:0;transform:translateY(-4px) scale(.95)}}
+.dot{width:24px;height:24px;border-radius:50%;border:0;padding:0;background:var(--c);transition:transform .15s,box-shadow .15s}
+.dot:hover{transform:scale(1.15)}
+.dot.on{box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--c)}
+.dot[data-c=green]{--c:#4fae91}.dot[data-c=blue]{--c:#4f8fd6}.dot[data-c=violet]{--c:#8b6fd6}.dot[data-c=amber]{--c:#d99a2b}.dot[data-c=rose]{--c:#d6587f}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px}
 .tabs{display:flex;gap:4px;margin-right:auto}
@@ -33,22 +55,63 @@ button,.btn{font:inherit;color:inherit;cursor:pointer}
 #q:focus{outline:none;border-color:var(--accent);width:200px}
 .btn{display:inline-block;padding:7px 14px;border-radius:8px;border:1px solid var(--accent);color:var(--accent);font-size:14px;text-decoration:none;background:none;transition:background .2s,color .2s}
 .btn:hover{background:var(--accent);color:var(--bg)}
-#list{animation:rise .5s ease both}
-@keyframes rise{from{opacity:0;transform:translateY(6px)}}
+
+/* icons */
+.i{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* newest / oldest switch */
+.srt{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:14px;color:var(--muted);transition:border-color .2s,color .2s}
+.srt:hover{border-color:var(--accent);color:var(--text)}
+.srt .i{width:14px;height:14px;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.srt.old .i{transform:rotate(180deg)}
+.srt[hidden]{display:none}
+
+/* list + slide-in from the left edge of the screen */
+#list.anim .row{animation:slide .55s cubic-bezier(.2,.8,.25,1) both;animation-delay:calc(var(--i,0)*45ms)}
+@keyframes slide{from{opacity:0;transform:translateX(-100vw)}}
 .row{display:flex;align-items:baseline;gap:14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:15px 8px;transition:background .15s,padding .2s}
 .row:hover{background:var(--soft);padding-left:14px}
 .ty{flex:0 0 42px;font:13px var(--mono);color:var(--accent)}
 .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .row .nm{font-family:var(--serif);font-size:19px}
-.sz{font-size:13px;color:var(--muted)}
+.sz{font-size:13px;color:var(--muted);white-space:nowrap}
 .empty{padding:48px 8px;color:var(--muted);text-align:center}
 .empty b{display:block;font:400 20px var(--serif);color:var(--text);margin-bottom:6px}
 #reader[hidden],#home[hidden]{display:none}
+
+/* reader */
 .rh{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
 .rh .nm{font:500 15px var(--sans);color:var(--muted)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.acts[hidden],.act[hidden],.note[hidden]{display:none}
 .ghost{background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:14px;color:var(--text);text-decoration:none;transition:border-color .2s}
 .ghost:hover{border-color:var(--accent)}
+.note{margin:-8px 0 14px;font-size:13px;color:var(--muted)}
+
+/* copy / download / link buttons with a small confirm animation */
+.act{position:relative;display:inline-flex;align-items:center;gap:7px;overflow:hidden;background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:14px;color:var(--text);text-decoration:none;transition:border-color .2s,color .2s,transform .15s}
+.act:hover{border-color:var(--accent)}
+.act:active{transform:scale(.96)}
+.act::before{content:"";position:absolute;inset:0;background:var(--soft);transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.act.go::before{transform:scaleX(1)}
+.act>*{position:relative}
+.act .i2{display:none}
+.act.go .i1{animation:drop .55s ease}
+@keyframes drop{40%{transform:translateY(4px)}70%{transform:translateY(-2px)}}
+.act.ok{border-color:var(--accent);color:var(--accent)}
+.act.ok .i1{display:none}
+.act.ok .i2{display:block;animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(0)}}
+.act.on{border-color:var(--accent);color:var(--accent)}
+.info{margin:-6px 0 18px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:10px;animation:rise .25s ease both}
+.info[hidden]{display:none}
+.info dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 20px;margin:0;font-size:14px}
+.info dt{color:var(--muted)}
+.info dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.info dd.m{font-family:var(--mono);font-size:13px}
+
 #rb{animation:rise .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}}
 #rb h1,#rb h2,#rb h3{font-family:var(--serif);font-weight:500;line-height:1.25;margin:1.6em 0 .5em}
 #rb h1{font-size:32px;margin-top:0}#rb h2{font-size:25px}#rb h3{font-size:20px}
 #rb p,#rb li{font-family:var(--serif);font-size:18px;line-height:1.75}
@@ -59,53 +122,100 @@ button,.btn{font:inherit;color:inherit;cursor:pointer}
 #rb pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;font:14px/1.6 var(--mono);margin:0;tab-size:4}
 #rb pre code{background:none;padding:0}
 #rb table{border-collapse:collapse;width:100%;font-size:15px}#rb th,#rb td{border-bottom:1px solid var(--line);padding:8px;text-align:left}
+.run{display:block;width:100%;height:70vh;height:calc(100dvh - 150px);min-height:420px;border:1px solid var(--line);border-radius:10px;background:#fff}
 footer{margin-top:56px;color:var(--muted);font-size:13px;text-align:center}
+footer p{margin:6px 0 0}
 kbd{font:12px var(--mono);border:1px solid var(--line);border-radius:4px;padding:0 5px}
-@media(max-width:520px){h1{font-size:32px}#q,#q:focus{width:100%;order:3}.wrap{padding-top:36px}}
+@media(max-width:520px){h1{font-size:32px}#q,#q:focus{width:100%;order:3}.wrap{padding-top:36px}.s2{display:none}.tab{padding:6px 9px}.tabs{width:100%;margin-right:0}#act{margin-left:auto}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="ic-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
+<symbol id="ic-dl" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></symbol>
+<symbol id="ic-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+<symbol id="ic-redo" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.5-5.8M20 4v5h-5"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="ic-sort" viewBox="0 0 24 24"><path d="M12 5v14m0 0-5-5m5 5 5-5"/></symbol>
+<symbol id="ic-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.9 1.5-1.9-.3-1 .3-2.1 1.4-2.1H17a4 4 0 0 0 4-4c0-5-4-10-9-10z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7" r="1"/><circle cx="15.5" cy="7.5" r="1"/></symbol>
+<symbol id="ic-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+</defs></svg>
 <div class="wrap">
 <div id="home">
 <header>
 <div><p class="hi" id="hi"></p><h1>My <i>Ideas</i></h1></div>
+<div class="tools">
+<div class="pal">
+<button id="color" aria-label="Choose a colour theme" aria-haspopup="true" aria-expanded="false" title="Colour theme"><svg class="i"><use href="#ic-palette"/></svg></button>
+<div class="sw" id="swatches" role="radiogroup" aria-label="Colour theme" hidden>
+<button class="dot" role="radio" data-c="green" aria-label="Green" title="Green"></button>
+<button class="dot" role="radio" data-c="blue" aria-label="Blue" title="Blue"></button>
+<button class="dot" role="radio" data-c="violet" aria-label="Violet" title="Violet"></button>
+<button class="dot" role="radio" data-c="amber" aria-label="Amber" title="Amber"></button>
+<button class="dot" role="radio" data-c="rose" aria-label="Rose" title="Rose"></button>
+</div>
+</div>
 <button id="theme" aria-label="Switch between dark and light mode" title="Switch theme"></button>
+</div>
 </header>
 <div class="bar">
 <div class="tabs" role="tablist">
-<button class="tab" data-t="notes" role="tab">Notes<span id="cn">0</span></button>
-<button class="tab" data-t="files" role="tab">Files<span id="cf">0</span></button>
+<button class="tab" data-t="notes" role="tab">Notes<span id="c-notes">0</span></button>
+<button class="tab" data-t="files" role="tab">Files<span id="c-files">0</span></button>
+<button class="tab" data-t="running" role="tab">Running<span id="c-running">0</span></button>
 </div>
 <input id="q" type="search" placeholder="Search" aria-label="Search">
+<button class="srt" id="sort" title="Switch between newest and oldest first"><svg class="i"><use href="#ic-sort"/></svg><span id="sl">Newest</span></button>
 <a id="act" class="btn" target="_blank" rel="noopener"></a>
 </div>
-<div id="list"></div>
-<footer>Press <kbd>/</kbd> to search. Add or change files on GitHub and this page updates by itself.</footer>
+<div id="list"><div class="empty">Loading</div></div>
+<footer>
+<div>Press <kbd>/</kbd> to search.</div>
+</footer>
 </div>
 <div id="reader" hidden>
 <div class="rh">
 <button class="ghost" id="back">Back</button>
 <span class="nm" id="rt"></span>
-<button class="ghost" id="copy">Copy</button>
-<a class="ghost" id="dl" download>Download</a>
+<span class="acts" id="acts">
+<button class="act" id="restart" hidden><svg class="i i1"><use href="#ic-redo"/></svg><svg class="i i2"><use href="#ic-check"/></svg><span>Restart</span></button>
+<button class="act" id="infob" aria-expanded="false" title="File information"><svg class="i"><use href="#ic-info"/></svg><span>Info</span></button>
+<button class="act" id="copy"><svg class="i i1"><use href="#ic-copy"/></svg><svg class="i i2"><use href="#ic-check"/></svg><span>Copy</span></button>
+<a class="act" id="dl" download><svg class="i i1"><use href="#ic-dl"/></svg><svg class="i i2"><use href="#ic-check"/></svg><span>Download</span></a>
+<button class="act" id="share" title="Copy a link to this page"><svg class="i i1"><use href="#ic-link"/></svg><svg class="i i2"><use href="#ic-check"/></svg><span>Link</span></button>
+</span>
 </div>
+<div class="info" id="info" hidden><dl id="infol"></dl></div>
+<p class="note" id="rn" hidden></p>
 <div id="rb"></div>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script>
-/* Change these if your repo or branch changes */
-const C={user:'sol-0-litude',repo:'My_Ideas',branch:'main',notes:'notes',files:'files'};
+/* Change these if your repo, branch or folder names change */
+const C={user:'sol-0-litude',repo:'My_Ideas',branch:'main',dirs:{notes:'notes',files:'files',running:'running_file'}};
 const gh='https://github.com/'+C.user+'/'+C.repo;
 const TEXT=new Set(['txt','md','py','js','ts','jsx','tsx','json','csv','html','css','c','cpp','h','java','sh','yml','yaml','toml','xml','ini','log','rs','go','sql','r','rb','php','swift','kt','tex']);
-const S={tab:'notes',notes:[],files:[],q:'',err:'',cur:''};
+const RUN=new Set(['html','htm','css','js']);                      /* what the Running tab can run */
+const OPEN=new Set(['pdf','png','jpg','jpeg','gif','webp','svg','mp3','mp4','webm']); /* opens in a new tab; everything else not in TEXT downloads */
+const TABS=['notes','files','running'];
+const COLORS=['green','blue','violet','amber','rose'];
+const DIR2TAB={};TABS.forEach(t=>{DIR2TAB[C.dirs[t]]=t});
+const TYPES={py:'Python',md:'Markdown',js:'JavaScript',ts:'TypeScript',jsx:'React JSX',tsx:'React TSX',json:'JSON',csv:'CSV',html:'HTML',htm:'HTML',css:'CSS',c:'C',cpp:'C++',h:'C header',java:'Java',sh:'Shell script',yml:'YAML',yaml:'YAML',toml:'TOML',xml:'XML',ini:'Config (INI)',log:'Log',rs:'Rust',go:'Go',sql:'SQL',r:'R',rb:'Ruby',php:'PHP',swift:'Swift',kt:'Kotlin',tex:'LaTeX',txt:'Plain text'};
+const S={tab:'notes',data:{notes:[],files:[],running:[]},sort:'new',q:'',err:'',cur:null,item:null,nodates:false,ready:false};
+try{if(localStorage.getItem('sort')==='old')S.sort='old'}catch(e){}
+
 const $=s=>document.querySelector(s);
-const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ext=n=>n.includes('.')?n.split('.').pop().toLowerCase():'';
 const fmt=b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB';
 const pretty=n=>n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ');
+const when=d=>d?new Date(d).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'';
+/* ?v= changes only when the file changes, so the browser can keep its own copy and GitHub Pages is hit less */
+const urlOf=f=>f.path.split('/').map(encodeURIComponent).join('/')+(f.v?'?v='+f.v:'');
+const absUrl=f=>new URL(urlOf(f),location.href).href;
 
+/* ---------- theme + greeting ---------- */
 function setTheme(t){
   document.documentElement.dataset.theme=t;
   $('#theme').textContent=t==='dark'?'\u2600':'\u263E';
@@ -114,70 +224,277 @@ function setTheme(t){
 let saved=null;try{saved=localStorage.getItem('theme')}catch(e){}
 setTheme(saved||'dark');
 $('#theme').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+function setColor(c){
+  if(!COLORS.includes(c))c='green';
+  document.documentElement.dataset.color=c;
+  document.querySelectorAll('.dot').forEach(d=>{const on=d.dataset.c===c;d.classList.toggle('on',on);d.setAttribute('aria-checked',on)});
+  try{localStorage.setItem('color',c)}catch(e){}
+}
+function swatches(open){$('#swatches').hidden=!open;$('#color').setAttribute('aria-expanded',open)}
+let savedColor=null;try{savedColor=localStorage.getItem('color')}catch(e){}
+setColor(savedColor);
+$('#color').onclick=()=>swatches($('#swatches').hidden);
+$('#swatches').onclick=e=>{const d=e.target.closest('.dot');if(d){setColor(d.dataset.c);swatches(false)}};
+document.addEventListener('click',e=>{if(!e.target.closest('.pal'))swatches(false)});
+const hr=new Date().getHours();
+$('#hi').textContent=hr<5?'Still up?':hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
 
-const h=new Date().getHours();
-$('#hi').textContent=h<5?'Still up?':h<12?'Good morning':h<18?'Good afternoon':'Good evening';
-
-async function load(dir){
+/* ---------- loading the list ---------- */
+/* Main path: index.json (built by the GitHub Action, has dates). One small request, revalidated each visit. */
+/* Fallback: GitHub API, no dates, 3 requests. */
+async function listDir(dir){
   const r=await fetch('https://api.github.com/repos/'+C.user+'/'+C.repo+'/contents/'+dir+'?ref='+C.branch);
   if(r.status===404)return[];
   if(!r.ok)throw new Error('GitHub returned '+r.status);
-  return(await r.json()).filter(x=>x.type==='file'&&!x.name.startsWith('.'));
+  return(await r.json()).filter(x=>x.type==='file'&&!x.name.startsWith('.')).map(x=>({name:x.name,path:x.path,size:x.size,date:null,v:x.sha.slice(0,7)}));
+}
+async function loadAll(){
+  try{
+    const r=await fetch('index.json',{cache:'no-cache'});
+    if(!r.ok)throw 0;
+    const j=await r.json();
+    return{notes:j.notes||[],files:j.files||[],running:j.running||[]};
+  }catch(e){
+    S.nodates=true;
+    const r=await Promise.all(TABS.map(t=>listDir(C.dirs[t])));
+    return{notes:r[0],files:r[1],running:r[2]};
+  }
 }
 
-function render(){
-  $('#cn').textContent=S.notes.length;
-  $('#cf').textContent=S.files.length;
-  document.querySelectorAll('.tab').forEach(t=>{const on=t.dataset.t===S.tab;t.classList.toggle('on',on);t.setAttribute('aria-selected',on)});
-  const n=S.tab==='notes';
-  $('#act').href=gh+(n?'/new/':'/upload/')+C.branch+'/'+C[S.tab];
-  $('#act').textContent=n?'New note':'Upload file';
-  const el=$('#list');
+function sorted(list){
+  const a=list.slice();
+  if(S.nodates){const n=S.sort==='new'?1:-1;return a.sort((x,y)=>n*x.name.localeCompare(y.name,undefined,{numeric:true}))}
+  const k=S.sort==='new'?-1:1;
+  return a.sort((x,y)=>k*((x.date||'').localeCompare(y.date||''))||x.name.localeCompare(y.name));
+}
+
+function render(anim){
+  TABS.forEach(t=>{$('#c-'+t).textContent=S.data[t].length});
+  document.querySelectorAll('.tab').forEach(b=>{const on=b.dataset.t===S.tab;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+  const t=S.tab,el=$('#list');
+  const act={notes:['/new/','New note'],files:['/upload/','Upload file'],running:['/upload/','Upload file']}[t];
+  $('#act').href=gh+act[0]+C.branch+'/'+C.dirs[t];
+  $('#act').textContent=act[1];
+  $('#sort').classList.toggle('old',S.sort==='old');
+  $('#sl').textContent=S.nodates?(S.sort==='old'?'Z\u2013A':'A\u2013Z'):(S.sort==='old'?'Oldest':'Newest');
+  $('#sort').title=S.nodates?'Switch between A\u2013Z and Z\u2013A':'Switch between newest and oldest first';
+  el.classList.toggle('anim',!!anim);
   if(S.err){el.innerHTML='<div class="empty"><b>Could not load from GitHub</b>'+esc(S.err)+'. Wait a minute and refresh.</div>';return}
-  const list=S[S.tab].filter(f=>f.name.toLowerCase().includes(S.q));
+  const list=sorted(S.data[t].filter(f=>f.name.toLowerCase().includes(S.q)));
   if(!list.length){
     el.innerHTML=S.q?'<div class="empty"><b>No matches</b>Try a different word.</div>'
-      :n?'<div class="empty"><b>No notes yet</b>Add a .md file to the notes folder and it appears here.</div>'
-        :'<div class="empty"><b>No files yet</b>Add a PDF, text file or code file to the files folder and it appears here.</div>';
+      :t==='notes'?'<div class="empty"><b>No notes yet</b>Add a .md file to the notes folder and it appears here.</div>'
+      :t==='files'?'<div class="empty"><b>No files yet</b>Add a PDF, text file or code file to the files folder and it appears here.</div>'
+      :'<div class="empty"><b>Nothing running yet</b>Add an .html, .css or .js file to the running_file folder and it appears here.</div>';
     return;
   }
-  el.innerHTML=list.map(f=>'<button class="row" data-p="'+esc(f.path)+'"><span class="ty">'+esc(n?'note':(ext(f.name)||'file'))+'</span><span class="nm">'+esc(n?pretty(f.name):f.name)+'</span><span class="sz">'+fmt(f.size)+'</span></button>').join('');
+  el.innerHTML=list.map((f,i)=>{
+    const d=when(f.date);
+    return'<button class="row" data-p="'+esc(f.path)+'" style="--i:'+Math.min(i,12)+'">'
+      +'<span class="ty">'+esc(t==='notes'?'note':(ext(f.name)||'file'))+'</span>'
+      +'<span class="nm">'+esc(t==='files'?f.name:pretty(f.name))+'</span>'
+      +'<span class="sz">'+esc(d||fmt(f.size))+'</span>'
+      +(d?'<span class="sz s2">'+fmt(f.size)+'</span>':'')
+      +'</button>';
+  }).join('');
 }
 
-async function openItem(f){
-  const e=ext(f.name),url=encodeURI(f.path);
-  if(S.tab==='files'&&!TEXT.has(e)){window.open(url,'_blank');return}
-  $('#home').hidden=true;$('#reader').hidden=false;window.scrollTo(0,0);
-  $('#rt').textContent=S.tab==='notes'?pretty(f.name):f.name;
-  $('#dl').href=url;$('#dl').setAttribute('download',f.name);
+/* ---------- reading + running ---------- */
+const mem=new Map();
+async function getText(f){
+  const k=f.path+'@'+f.v;
+  if(mem.has(k))return mem.get(k);
+  const r=await fetch(urlOf(f),{cache:'force-cache'});
+  if(!r.ok)throw 0;
+  const t=await r.text();
+  mem.set(k,t);return t;
+}
+let mk=null;
+function loadMarked(){
+  if(window.marked)return Promise.resolve();
+  return mk||(mk=new Promise((ok,no)=>{
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js';
+    s.onload=ok;s.onerror=()=>{mk=null;no()};
+    document.head.appendChild(s);
+  }));
+}
+
+const HARNESS="(function(){var o=document.getElementById('out');"
++"function p(a,c){var t=[].map.call(a,function(x){try{return typeof x==='object'?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(' ');var d=document.createElement('div');if(c)d.className=c;d.textContent=t;o.appendChild(d)}"
++"['log','info','warn','error'].forEach(function(k){var f=console[k];console[k]=function(){p(arguments,k==='error'?'e':'');f.apply(console,arguments)}});"
++"window.addEventListener('error',function(e){p([e.message],'e')})})();";
+function jsPage(src){
+  return'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+  +'<style>body{margin:0;font:15px/1.5 system-ui,sans-serif;color:#111;background:#fff}#app{min-height:60vh;padding:12px}#out{margin:0;padding:10px 12px;border-top:1px solid #ddd;background:#f6f6f6;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}#out:empty{display:none}.e{color:#c00}</style>'
+  +'<div id="app"></div><pre id="out"></pre>'
+  +'<script>'+HARNESS+'<\/script><script src="'+src+'" crossorigin="anonymous"><\/script>';
+}
+function cssPage(src){
+  return'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+  +'<link rel="stylesheet" href="'+src+'" crossorigin="anonymous">'
+  +'<body><header><nav><a href="#">Home</a> <a href="#">About</a> <a href="#">Contact</a></nav></header>'
+  +'<main><h1>Heading one</h1><h2>Heading two</h2><h3>Heading three</h3>'
+  +'<p>A paragraph with a <a href="#">link</a>, <strong>bold</strong>, <em>italic</em> and <code>inline code</code>.</p>'
+  +'<p><button>Button</button> <input placeholder="Text input"> <select><option>Option</option></select></p>'
+  +'<ul><li>List item</li><li>List item</li></ul><ol><li>First</li><li>Second</li></ol>'
+  +'<blockquote>A short quote.</blockquote>'
+  +'<table><tr><th>Name</th><th>Value</th></tr><tr><td>One</td><td>1</td></tr><tr><td>Two</td><td>2</td></tr></table>'
+  +'</main><footer>Footer text</footer></body>';
+}
+function runItem(f){
+  const e=ext(f.name),box=$('#rb');
+  box.innerHTML='';
+  const fr=document.createElement('iframe');
+  fr.className='run';fr.title=pretty(f.name);
+  /* no allow-same-origin: running files cannot touch this page */
+  fr.setAttribute('sandbox','allow-scripts allow-forms allow-modals allow-pointer-lock allow-downloads');
+  if(e==='js')fr.srcdoc=jsPage(absUrl(f));
+  else if(e==='css')fr.srcdoc=cssPage(absUrl(f));
+  else fr.src=absUrl(f);
+  box.appendChild(fr);
+}
+
+function setInfo(f){
+  const e=ext(f.name);
+  const rows=[['Filename',f.name,1],['Type',TYPES[e]||(e?e.toUpperCase():'File')],['Size',fmt(f.size)],['Last updated',when(f.date)||'\u2014'],['Location',f.path,1]];
+  $('#infol').innerHTML=rows.map(r=>'<dt>'+r[0]+'</dt><dd'+(r[2]?' class="m"':'')+'>'+esc(r[1])+'</dd>').join('');
+  $('#info').hidden=true;
+  $('#infob').classList.remove('on');$('#infob').setAttribute('aria-expanded','false');
+}
+async function showReader(f,tab){
+  S.item=f;S.cur=null;
+  const run=tab==='running',e=ext(f.name);
+  $('#home').hidden=true;$('#reader').hidden=false;
+  document.querySelector('.wrap').classList.toggle('wide',run);
+  window.scrollTo(0,0);
+  $('#acts').hidden=false;setInfo(f);
+  $('#rt').textContent=tab==='files'?f.name:pretty(f.name);
+  document.title=pretty(f.name)+' \u00b7 My Ideas';
+  const dl=$('#dl');dl.href=urlOf(f);dl.setAttribute('download',f.name);
+  $('#restart').hidden=!run;
+  const nt=$('#rn');
+  nt.hidden=!(run&&(e==='js'||e==='css'));
+  nt.textContent=e==='js'?'Running in a blank page. console.log output shows under the page.':e==='css'?'Previewing this stylesheet on a sample page.':'';
+  if(run){runItem(f);return}
   $('#rb').innerHTML='<div class="empty">Loading</div>';
   try{
-    const r=await fetch(url);if(!r.ok)throw 0;
-    S.cur=await r.text();
-    $('#rb').innerHTML=e==='md'&&window.marked?marked.parse(S.cur):'<pre><code>'+esc(S.cur)+'</code></pre>';
-  }catch(x){$('#rb').innerHTML='<div class="empty"><b>Could not open this file</b>It may still be publishing. Wait a minute and try again.</div>'}
+    const txt=await getText(f);
+    if(S.item!==f)return;
+    S.cur=txt;
+    let html=null;
+    if(e==='md'){try{await loadMarked();html=marked.parse(txt)}catch(x){}}
+    if(S.item!==f)return;
+    $('#rb').innerHTML=html!==null?html:'<pre><code>'+esc(txt)+'</code></pre>';
+  }catch(x){
+    if(S.item===f)$('#rb').innerHTML='<div class="empty"><b>Could not open this file</b>It may still be publishing. Wait a minute and try again.</div>';
+  }
 }
-function back(){$('#reader').hidden=true;$('#home').hidden=false}
+function showMissing(name){
+  S.item=null;
+  $('#home').hidden=true;$('#reader').hidden=false;
+  document.querySelector('.wrap').classList.remove('wide');
+  $('#acts').hidden=true;$('#rn').hidden=true;$('#info').hidden=true;
+  $('#rt').textContent=name;
+  $('#rb').innerHTML='<div class="empty"><b>Not found</b>This file is not in the list. It may have been renamed or removed.</div>';
+}
+function showHome(){
+  S.item=null;
+  $('#reader').hidden=true;$('#home').hidden=false;
+  document.querySelector('.wrap').classList.remove('wide');
+  $('#rb').innerHTML='';           /* also stops anything that was running */
+  document.title='My Ideas';
+}
+function fetchOut(f){
+  const a=document.createElement('a');a.href=urlOf(f);
+  if(OPEN.has(ext(f.name))){a.target='_blank';a.rel='noopener'}else a.download=f.name;
+  document.body.appendChild(a);a.click();a.remove();
+}
 
-$('#list').onclick=e=>{const b=e.target.closest('.row');if(b)openItem(S[S.tab].find(x=>x.path===b.dataset.p))};
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{S.tab=t.dataset.t;render()});
-$('#q').oninput=e=>{S.q=e.target.value.trim().toLowerCase();render()};
+/* ---------- links: #notes #files #running (lists) and #<full path> e.g. #files/project.py ---------- */
+const dec=x=>{try{return decodeURIComponent(x)}catch(e){return x}};
+const hashFor=f=>'#'+f.path.split('/').map(encodeURIComponent).join('/');
+function parseHash(){
+  const p=location.hash.slice(1).split('/').map(dec),first=p[0],rest=p.slice(1).join('/');
+  if(!rest)return{tab:TABS.includes(first)?first:(DIR2TAB[first]||'notes'),path:''};
+  /* older links looked like #running/name: map the tab name to its folder */
+  const dir=DIR2TAB[first]?first:(TABS.includes(first)?C.dirs[first]:'');
+  if(!dir)return{tab:S.tab,path:p.join('/')};
+  return{tab:DIR2TAB[dir],path:dir+'/'+rest};
+}
+function route(first){
+  const h=parseHash();
+  const changed=first||h.tab!==S.tab;
+  S.tab=h.tab;
+  if(h.path){
+    const f=S.data[h.tab].find(x=>x.path===h.path);
+    if(!f){showMissing(h.path);return}
+    if(h.tab==='files'&&!TEXT.has(ext(f.name))){history.replaceState(history.state,'','#files');fetchOut(f)}
+    else{showReader(f,h.tab);return}
+  }
+  showHome();render(changed);
+}
+/* Every in-site move is a real history entry marked {a:1}. The marker lives on the entry itself,
+   so Back, Forward, reloads and shared links all read the same truth. */
+function nav(hash,replace){
+  history[replace?'replaceState':'pushState']({a:1},'',hash);
+  route();
+}
+function back(){
+  if(history.state&&history.state.a)history.back();   /* we came from inside the site */
+  else nav('#'+S.tab,true);                           /* direct link: go to its list */
+}
+
+/* ---------- buttons ---------- */
+function flash(b,label,good=true){
+  const s=b.querySelector('span');
+  if(!b.dataset.l)b.dataset.l=s.textContent;
+  clearTimeout(b._t1);clearTimeout(b._t2);
+  b.classList.remove('go','ok');void b.offsetWidth;
+  b.classList.add('go');
+  b._t1=setTimeout(()=>{if(good)b.classList.add('ok');s.textContent=label},good?550:0);
+  b._t2=setTimeout(()=>{b.classList.remove('go','ok');s.textContent=b.dataset.l},1900);
+}
+async function copyWith(b,getter,done){
+  try{await navigator.clipboard.writeText(await getter());flash(b,done)}
+  catch(x){flash(b,'Could not copy',false)}
+}
+$('#copy').onclick=e=>copyWith(e.currentTarget,async()=>S.cur!=null?S.cur:getText(S.item),'Copied');
+$('#share').onclick=e=>copyWith(e.currentTarget,async()=>location.href,'Link copied');
+$('#dl').addEventListener('click',e=>flash(e.currentTarget,'Saved'));
+$('#restart').onclick=e=>{if(S.item){runItem(S.item);flash(e.currentTarget,'Restarted')}};
 $('#back').onclick=back;
-$('#copy').onclick=async e=>{
-  try{await navigator.clipboard.writeText(S.cur);e.target.textContent='Copied'}catch(x){e.target.textContent='Could not copy'}
-  setTimeout(()=>e.target.textContent='Copy',1400);
+$('#infob').onclick=e=>{const b=e.currentTarget,show=$('#info').hidden;$('#info').hidden=!show;b.classList.toggle('on',show);b.setAttribute('aria-expanded',show)};
+
+$('#list').onclick=e=>{
+  const b=e.target.closest('.row');if(!b)return;
+  const f=S.data[S.tab].find(x=>x.path===b.dataset.p);if(!f)return;
+  if(S.tab==='files'&&!TEXT.has(ext(f.name))){fetchOut(f);return}
+  nav(hashFor(f));
 };
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(b.dataset.t!==S.tab)nav('#'+b.dataset.t)});
+$('#q').oninput=e=>{S.q=e.target.value.trim().toLowerCase();render(false)};
+$('#sort').onclick=()=>{
+  S.sort=S.sort==='new'?'old':'new';
+  try{localStorage.setItem('sort',S.sort)}catch(e){}
+  render(true);
+};
+window.addEventListener('popstate',()=>{if(S.ready)route()});
 document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!$('#swatches').hidden){swatches(false);return}
   if(e.key==='Escape'&&!$('#reader').hidden)back();
   if(e.key==='/'&&!$('#home').hidden&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('#q').focus()}
 });
 
 (async()=>{
   try{
-    const r=await Promise.all([load(C.notes),load(C.files)]);
-    S.notes=r[0].filter(f=>ext(f.name)==='md');S.files=r[1];
+    const d=await loadAll();
+    S.data.notes=d.notes.filter(f=>ext(f.name)==='md');
+    S.data.files=d.files;
+    S.data.running=d.running.filter(f=>RUN.has(ext(f.name)));
   }catch(e){S.err=e.message}
-  render();
+  S.ready=true;
+  route(true);
 })();
 </script>
 </body>
