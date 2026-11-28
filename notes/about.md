@@ -40,6 +40,7 @@ A New Beginning
 
 
 
+# site link - https://sol-0-litude.github.io/My_Ideas/#notes
 
 
 
