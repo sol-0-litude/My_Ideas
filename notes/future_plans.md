@@ -1,0 +1,5 @@
+- add more theme
+- remove .json part from index.html file
+- making a 3d tic tak toe
+- fix code to make it more optimize
+- checking stablity
